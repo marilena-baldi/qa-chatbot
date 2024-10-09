@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+  chatbot:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: ${DEVICE:-cpu}
+    volumes:
+      - ./:/chatbot
+    ports:
+      - 8888:${PORT_NUM_C}
+    command: uvicorn main:app --host "0.0.0.0" --port ${PORT_NUM_C} --log-config ${LOG_CONF_FILE}
+    restart: always
+
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - 8887:${DB_PORT}
+    # volumes:
+    #   - ./postgres-data:/var/lib/postgresql/data
+
+  adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 8886:8080

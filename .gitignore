@@ -1,0 +1,7 @@
+.idea
+**/__pycache__
+/.pytest_cache/
+
+ai/data/
+.env
+/postgres-data/
